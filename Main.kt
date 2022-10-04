@@ -22,5 +22,11 @@ fun main(){
     println(queue.size())
     queue.clean()
     println(queue.size())
+    queue.push(8)
+    queue.push(10)
+    queue.push(5)
+    println(queue.read())
+    println(queue.read())
+    println(queue.size())
 
 }
