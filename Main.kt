@@ -23,7 +23,4 @@ fun main(){
     queue.clean()
     println(queue.size())
 
-
-
-
 }
