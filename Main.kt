@@ -20,6 +20,8 @@ fun main(){
     println(queue.pop())
     println(queue.pop())
     println(queue.size())
+    queue.clean()
+    println(queue.size())
 
 
 
