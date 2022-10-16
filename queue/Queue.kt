@@ -1,46 +1,50 @@
 package queue
 
 class Queue<T> {
-    private var data: Array<Any?> = arrayOfNulls(0)
-    private var increase: Boolean = false
-    private var readInd: Int = 0
-    private var size: Int = 0
+    class Node<T>(var value: T, var previous: Node<T>? = null, var next: Node<T>? = null) {}
 
-    fun changeSize(data: Array<Any?>, increase: Boolean){
-        if(increase){
-            val newData = arrayOfNulls<Any?>(data.size + 1)
-            for(i in data.indices)
-                newData[i] = data[i]
-            this.data = newData
-        }else{
-            val newData = arrayOfNulls<Any?>(data.size - 1)
-            for(i in 1 until data.size)
-                newData[i  - 1] = data[i]
-            this.data = newData
+    private var head: Node<T>? = null
+    private var tail: Node<T>? = null
+    private var size = 0
+
+    //проверка на пустоту
+    private fun isEmpty(): Boolean {
+        return size == 0
+    }
+
+    //добавление в конец очереди
+    fun push(newElement: T){
+        if(isEmpty()) {
+            head = Node(newElement)
+            tail = head
+            size++
+        }
+        else{
+            val tmp: Node<T>? = tail
+            tail?.next = Node(newElement)
+            tail = tail?.next
+            tail?.previous = tmp
+            size++
         }
     }
 
-    //включение нового элемента
-    fun push(element: T){
-        size++
-        increase = true
-        changeSize(data, this.increase)
-        data[data.size - 1] = element
+    //удалениие с начала
+    fun pop(): T? {
+        val removingValue: Node<T>? = head
+        head = head?.next
+        head?.previous = null
+        if(size > 0)
+            size--
+        return removingValue?.value
     }
 
-    //исключение элемента из очереди
-    fun pop(): T {
-        size--
-        val removingEl: T = data[0] as T
-        increase = false
-        changeSize(data, this.increase)
-        return removingEl
-    }
-
-    //неразрушающее чтение элемента
-    fun read(): T {
-        size--
-        return data[readInd++] as T
+    //неразрушающее чтение элемента из очереди
+    fun read(): T? {
+        val removingValue: Node<T>? = head
+        head = head?.next
+        if(size > 0)
+            size--
+        return removingValue?.value
     }
 
     //определение текущего числа элементов в очереди
@@ -51,8 +55,7 @@ class Queue<T> {
     //очистка очереди
     fun clean(){
         size = 0
-        data = arrayOfNulls(0)
+        head = null
+        tail = null
     }
-
-
 }
